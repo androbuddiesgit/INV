@@ -8,9 +8,14 @@ import DeleteInvoiceButton from './DeleteInvoiceButton';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const invoices = await prisma.invoice.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
+  let invoices: any[] = [];
+  try {
+    invoices = await prisma.invoice.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  } catch (error) {
+    console.error("Database connection failed during build:", error);
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">

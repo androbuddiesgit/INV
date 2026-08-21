@@ -74,11 +74,30 @@ export async function deleteInvoice(id: string) {
 }
 
 export async function getSettings() {
-  let settings = await prisma.setting.findUnique({ where: { id: "default" } });
-  if (!settings) {
-    settings = await prisma.setting.create({ data: { id: "default" } });
+  try {
+    let settings = await prisma.setting.findFirst();
+    if (!settings) {
+      settings = await prisma.setting.create({
+        data: {}
+      });
+    }
+    return settings;
+  } catch (error) {
+    console.error("Database connection failed (likely during build):", error);
+    // Return default fallback during Vercel build if DB is unreachable
+    return {
+      companyName: "NURUL BAROKAH FASHION",
+      companyAddress: "Kancana, Kec. Cikijing",
+      companyPhone: "+62 823-1526-4784",
+      companyLogo: "NB",
+      stampLogo: "",
+      bankAccount: "1982664820",
+      bankName: "Bank BNI Cab Kuningan",
+      bankOwner: "Ika Nuraeni",
+      officerName: "Eko Maryanto",
+      officerTitle: "Marketing Officer",
+    };
   }
-  return settings;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -17,7 +17,7 @@ export default function DeleteInvoiceButton({ id }: { id: string }) {
   return (
     <button
       onClick={handleDelete}
-      className="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-semibold transition-colors"
+      className="w-full px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-semibold transition-colors"
       title="Hapus Invoice"
     >
       Hapus

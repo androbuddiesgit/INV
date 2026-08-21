@@ -111,12 +111,12 @@ export default function DashboardClient({ initialInvoices }: { initialInvoices: 
                         <td className="p-4 text-center">
                           {statusBadge}
                         </td>
-                        <td className="p-4 text-center">
-                          <div className="flex items-center justify-center gap-2">
+                        <td className="p-4">
+                          <div className="flex flex-col lg:flex-row items-center justify-center gap-2">
                             {/* Tombol PDF View */}
                             <Link
                               href={`/invoice/${inv.id}`}
-                              className="px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-md text-sm font-semibold transition-colors"
+                              className="w-full lg:w-auto text-center px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-md text-sm font-semibold transition-colors"
                               title="Lihat / Cetak PDF"
                             >
                               Cetak PDF
@@ -125,14 +125,16 @@ export default function DashboardClient({ initialInvoices }: { initialInvoices: 
                             {/* Tombol Edit */}
                             <Link
                               href={`/invoice/${inv.id}/edit`}
-                              className="px-3 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 rounded-md text-sm font-semibold transition-colors"
+                              className="w-full lg:w-auto text-center px-3 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 rounded-md text-sm font-semibold transition-colors"
                               title="Edit Invoice"
                             >
                               Edit
                             </Link>
                             
                             {/* Tombol Hapus */}
-                            <DeleteInvoiceButton id={inv.id} />
+                            <div className="w-full lg:w-auto">
+                              <DeleteInvoiceButton id={inv.id} />
+                            </div>
                           </div>
                         </td>
                       </tr>

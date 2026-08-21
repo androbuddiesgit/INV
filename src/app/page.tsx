@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import DeleteInvoiceButton from './DeleteInvoiceButton';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const invoices = await prisma.invoice.findMany({
     orderBy: { createdAt: 'desc' },

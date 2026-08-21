@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { PlusCircle, FileText, Settings, Edit, ChevronDown, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { PlusCircle, Settings, ChevronDown, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import DeleteInvoiceButton from './DeleteInvoiceButton';

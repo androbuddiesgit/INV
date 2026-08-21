@@ -23,6 +23,7 @@ model Invoice {
   dp             Int           @default(0)
   sisaTagihan    Int           @default(0)
   terbilang      String?
+  isSettled      Boolean       @default(false)
   
   // Relations
   items          InvoiceItem[]

@@ -69,7 +69,125 @@ export async function createInvoice(data: any) {
 }
 
 export async function deleteInvoice(id: string) {
-  await prisma.invoice.delete({ where: { id } });
+  await prisma.invoiceItem.deleteMany({
+    where: { invoiceId: id },
+  });
+  await prisma.invoice.delete({
+    where: { id },
+  });
+  revalidatePath('/');
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateInvoice(id: string, data: any) {
+  // Hitung ulang total
+  let subTotal = 0;
+  const items = data.items.map((item: any) => {
+    const total = Number(item.qty) * Number(item.price);
+    subTotal += total;
+    return { ...item, total };
+  });
+
+  const sisaTagihan = subTotal - Number(data.dp);
+
+  // Update invoice
+  await prisma.invoice.update({
+    where: { id },
+    data: {
+      date: new Date(data.date),
+      toName: data.toName,
+      toAddress: data.toAddress,
+      toContact: data.toContact,
+      toPhone: data.toPhone,
+      subTotal,
+      dp: Number(data.dp),
+      sisaTagihan,
+      terbilang: data.terbilang,
+      // Delete old items and replace with new ones
+      items: {
+        deleteMany: {},
+        create: items.map((item: any) => ({
+          description: item.description,
+          qty: Number(item.qty),
+          price: Number(item.price),
+          total: item.total,
+        })),
+      },
+    },
+  });
+
+  revalidatePath('/');
+}
+
+export async function createPelunasan(originalInvoiceId: string) {
+  const oldInvoice = await prisma.invoice.findUnique({
+    where: { id: originalInvoiceId }
+  });
+
+  if (!oldInvoice || oldInvoice.sisaTagihan <= 0) return;
+
+  // Generate new Invoice Number
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const romanMonths = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  const romanMonth = romanMonths[month - 1];
+
+  const highestInvoice = await prisma.invoice.findFirst({
+    where: {
+      invoiceNumber: { endsWith: `/INV/${romanMonth}/${year}` }
+    },
+    orderBy: { invoiceNumber: 'desc' }
+  });
+
+  let nextNumber = 1;
+  if (highestInvoice) {
+    const parts = highestInvoice.invoiceNumber.split('/');
+    const lastNum = parseInt(parts[0], 10);
+    if (!isNaN(lastNum)) {
+      nextNumber = lastNum + 1;
+    }
+  }
+
+  const invoiceNumber = `${nextNumber.toString().padStart(3, '0')}/INV/${romanMonth}/${year}`;
+  const sisa = oldInvoice.sisaTagihan;
+
+  // Generate new terbilang for pelunasan amount
+  const { formatTerbilang } = await import('@/lib/terbilang');
+  const terbilangStr = formatTerbilang(sisa);
+
+  // Create Pelunasan Invoice
+  await prisma.invoice.create({
+    data: {
+      invoiceNumber,
+      date: new Date(),
+      toName: oldInvoice.toName,
+      toAddress: oldInvoice.toAddress,
+      toContact: oldInvoice.toContact,
+      toPhone: oldInvoice.toPhone,
+      subTotal: sisa,
+      dp: 0,
+      sisaTagihan: sisa,
+      terbilang: terbilangStr,
+      items: {
+        create: [
+          {
+            description: `Pelunasan sisa tagihan untuk Invoice No. ${oldInvoice.invoiceNumber}`,
+            qty: 1,
+            price: sisa,
+            total: sisa
+          }
+        ]
+      }
+    }
+  });
+
+  // Mark old invoice as settled
+  await prisma.invoice.update({
+    where: { id: originalInvoiceId },
+    data: { isSettled: true }
+  });
+
   revalidatePath('/');
 }
 

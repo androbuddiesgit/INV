@@ -1,6 +1,5 @@
 'use client';
 
-import { Trash2 } from 'lucide-react';
 import { deleteInvoice } from '@/app/actions';
 
 export default function DeleteInvoiceButton({ id }: { id: string }) {
@@ -18,10 +17,10 @@ export default function DeleteInvoiceButton({ id }: { id: string }) {
   return (
     <button
       onClick={handleDelete}
-      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+      className="px-3 py-1.5 bg-red-100 text-red-700 hover:bg-red-200 rounded-md text-sm font-semibold transition-colors"
       title="Hapus Invoice"
     >
-      <Trash2 size={18} />
+      Hapus
     </button>
   );
 }

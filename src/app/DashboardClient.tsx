@@ -112,23 +112,23 @@ export default function DashboardClient({ initialInvoices }: { initialInvoices: 
                           {statusBadge}
                         </td>
                         <td className="p-4 text-center">
-                          <div className="flex items-center justify-center gap-1">
+                          <div className="flex items-center justify-center gap-2">
                             {/* Tombol PDF View */}
                             <Link
                               href={`/invoice/${inv.id}`}
-                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                              title="Lihat PDF"
+                              className="px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-md text-sm font-semibold transition-colors"
+                              title="Lihat / Cetak PDF"
                             >
-                              <FileText size={18} />
+                              Cetak PDF
                             </Link>
 
                             {/* Tombol Edit */}
                             <Link
                               href={`/invoice/${inv.id}/edit`}
-                              className="p-2 text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
+                              className="px-3 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 rounded-md text-sm font-semibold transition-colors"
                               title="Edit Invoice"
                             >
-                              <Edit size={18} />
+                              Edit
                             </Link>
                             
                             {/* Tombol Hapus */}

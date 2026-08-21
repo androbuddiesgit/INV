@@ -34,6 +34,7 @@ export default function InvoiceForm({ initialData }: { initialData?: any }) {
   const watchItems = watch('items');
   const watchDp = watch('dp');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const subTotal = watchItems.reduce((acc: number, curr: any) => acc + (Number(curr.qty) * Number(curr.price)), 0);
   const sisaTagihan = subTotal - Number(watchDp);
 

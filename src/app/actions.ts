@@ -82,6 +82,7 @@ export async function deleteInvoice(id: string) {
 export async function updateInvoice(id: string, data: any) {
   // Hitung ulang total
   let subTotal = 0;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const items = data.items.map((item: any) => {
     const total = Number(item.qty) * Number(item.price);
     subTotal += total;
@@ -106,6 +107,7 @@ export async function updateInvoice(id: string, data: any) {
       // Delete old items and replace with new ones
       items: {
         deleteMany: {},
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         create: items.map((item: any) => ({
           description: item.description,
           qty: Number(item.qty),

@@ -121,11 +121,12 @@ export default function InvoiceForm({ initialData }: { initialData?: any }) {
                 <div key={field.id} className="flex flex-col sm:flex-row gap-3 items-start bg-white p-3 border border-gray-200 rounded-lg">
                   <div className="flex-1 w-full">
                     <label className="block text-xs text-gray-500 mb-1 sm:hidden">Deskripsi</label>
-                    <input 
+                    <textarea 
                       {...register(`items.${index}.description`)} 
-                      placeholder="Deskripsi barang/jasa" 
+                      placeholder="Tekan Enter untuk membuat 1 Set barang dengan harga yang sama..." 
                       required 
-                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" 
+                      rows={2}
+                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 resize-y" 
                     />
                   </div>
                   <div className="w-full sm:w-24">

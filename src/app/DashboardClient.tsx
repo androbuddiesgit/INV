@@ -161,8 +161,8 @@ export default function DashboardClient({ initialInvoices }: { initialInvoices: 
                                       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                       {inv.items.map((item: any) => (
                                         <tr key={item.id}>
-                                          <td className="p-2 text-gray-700">{item.description}</td>
-                                          <td className="p-2 text-center text-gray-700">{item.qty}</td>
+                                          <td className="p-2 text-gray-700 whitespace-pre-wrap leading-tight">{item.description}</td>
+                                          <td className="p-2 text-center text-gray-700">{item.qty} Pcs</td>
                                           <td className="p-2 text-right text-gray-700">{item.price.toLocaleString('id-ID')}</td>
                                           <td className="p-2 text-right font-medium text-gray-800">{item.total.toLocaleString('id-ID')}</td>
                                         </tr>

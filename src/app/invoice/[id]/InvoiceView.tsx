@@ -182,16 +182,25 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
               </tr>
             </thead>
             <tbody>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {invoice.items.map((item: any, i: number) => (
-                <tr key={item.id} className="border-b border-black text-center">
-                  <td className="border-r border-black p-2">{i + 1}</td>
-                  <td className="border-r border-black p-2 text-left">{item.description}</td>
-                  <td className="border-r border-black p-2">{item.qty} Pcs</td>
-                  <td className="border-r border-black p-2 text-right">{item.price.toLocaleString('id-ID')}</td>
-                  <td className="p-2 text-right">{item.total.toLocaleString('id-ID')}</td>
-                </tr>
-              ))}
+              {(() => {
+                let currentNo = 1;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return invoice.items.map((item: any) => {
+                  const lines = item.description.split('\n');
+                  const numbers = lines.map((_: any, index: number) => currentNo + index).join('\n');
+                  currentNo += lines.length;
+                  
+                  return (
+                    <tr key={item.id} className="border-b border-black text-center">
+                      <td className="border-r border-black p-2 align-top whitespace-pre-wrap leading-tight">{numbers}</td>
+                      <td className="border-r border-black p-2 text-left align-top whitespace-pre-wrap leading-tight">{item.description}</td>
+                      <td className="border-r border-black p-2 align-middle">{item.qty} Pcs</td>
+                      <td className="border-r border-black p-2 text-right align-middle">{item.price.toLocaleString('id-ID')}</td>
+                      <td className="p-2 text-right align-middle">{item.total.toLocaleString('id-ID')}</td>
+                    </tr>
+                  );
+                });
+              })()}
               
               {/* Fill empty rows if needed to make it look like the template */}
               {[...Array(Math.max(0, 3 - invoice.items.length))].map((_, i) => (

@@ -8,6 +8,7 @@ import DeleteInvoiceButton from './DeleteInvoiceButton';
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let invoices: any[] = [];
   try {
     invoices = await prisma.invoice.findMany({

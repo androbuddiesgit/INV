@@ -12,7 +12,6 @@ import Link from 'next/link';
 export default function InvoiceView({ invoice, settings }: { invoice: any, settings: any }) {
   const printRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const handleDownloadPdf = async () => {
     if (!printRef.current) return;
@@ -44,11 +43,10 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
     }
   };
 
-  const handleCopyLink = () => {
+  const handleShareWA = () => {
     const url = window.location.href;
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const text = encodeURIComponent(`Halo ${invoice.toName},\n\nBerikut adalah Invoice Anda dengan nomor *${invoice.invoiceNumber}*.\n\nSilakan klik link di bawah ini untuk melihat detail atau mengunduh file PDF-nya:\n${url}\n\nTerima kasih.`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
   };
 
   return (
@@ -60,11 +58,11 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
         </Link>
         <div className="flex items-center gap-3">
           <button 
-            onClick={handleCopyLink}
-            className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+            onClick={handleShareWA}
+            className="flex items-center gap-2 px-4 py-2 border border-green-500 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors font-medium"
           >
             <Share2 size={18} />
-            {copied ? 'Tersalin!' : 'Share Link'}
+            Share WhatsApp
           </button>
           <button 
             onClick={handleDownloadPdf}

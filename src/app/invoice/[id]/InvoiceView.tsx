@@ -13,28 +13,36 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
   const printRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const generatePdfBlob = async () => {
+    if (!printRef.current) throw new Error('Ref missing');
+    const element = printRef.current;
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+    const data = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    });
+    const imgProperties = pdf.getImageProperties(data);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    
+    return { 
+      blob: pdf.output('blob'), 
+      filename: `Invoice_${invoice.invoiceNumber.replace(/\//g, '_')}.pdf` 
+    };
+  };
+
   const handleDownloadPdf = async () => {
-    if (!printRef.current) return;
     setIsDownloading(true);
-
     try {
-      const element = printRef.current;
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-      const data = canvas.toDataURL('image/png');
-
-      // A4 Size in mm: 210 x 297
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
-
-      const imgProperties = pdf.getImageProperties(data);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-
-      pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Invoice_${invoice.invoiceNumber.replace(/\//g, '_')}.pdf`);
+      const { blob, filename } = await generatePdfBlob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
     } catch (error) {
       console.error(error);
       alert('Gagal mendownload PDF');
@@ -43,10 +51,37 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
     }
   };
 
-  const handleShareWA = () => {
-    const url = window.location.href;
-    const text = encodeURIComponent(`Halo ${invoice.toName},\n\nBerikut adalah Invoice Anda dengan nomor *${invoice.invoiceNumber}*.\n\nSilakan klik link di bawah ini untuk melihat detail atau mengunduh file PDF-nya:\n${url}\n\nTerima kasih.`);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
+  const handleShareWA = async () => {
+    setIsDownloading(true);
+    try {
+      const { blob, filename } = await generatePdfBlob();
+      const file = new File([blob], filename, { type: 'application/pdf' });
+      
+      // Jika browser mendukung web share file (seperti Safari/Chrome di HP)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Invoice',
+          text: `Halo ${invoice.toName},\nBerikut adalah Invoice Anda.`,
+        });
+      } else {
+        alert('Fitur Share File langsung tidak didukung di browser ini (biasanya di PC). File PDF akan didownload otomatis agar bisa Anda kirim/lampirkan manual ke WhatsApp.');
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        // User membatalkan share, abaikan
+      } else {
+        console.error(error);
+        alert('Gagal memproses file untuk dibagikan');
+      }
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (

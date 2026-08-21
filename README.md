@@ -1,51 +1,71 @@
-# Marketing Invoice App
+# Aplikasi Manajemen Invoice (Marketing) 📄💼
 
-Aplikasi pembuatan invoice marketing, dibuat khusus agar mudah dideploy di server Armbian menggunakan Cloudflare Zero Trust.
+Aplikasi web modern berbasis **Next.js** untuk mengelola, mencetak, dan membagikan tagihan (invoice) secara cepat dan mudah. Aplikasi ini didesain secara spesifik agar *user-friendly*, sangat responsif di perangkat mobile, dan cocok digunakan oleh pengguna dari berbagai kalangan usia.
 
-## Prasyarat Server (Armbian)
-- Node.js (v18 atau lebih baru)
-- NPM atau Yarn
-- `cloudflared` (Untuk Cloudflare Zero Trust)
+## ✨ Fitur Utama
 
-## Cara Menjalankan Aplikasi
+- **📝 CRUD Invoice Lengkap**: Buat, lihat, edit, dan hapus invoice dengan mudah.
+- **📄 Cetak & Download PDF**: Generate invoice ke format A4 PDF secara langsung dari browser tanpa perlu server tambahan (menggunakan `html2canvas` & `jspdf`).
+- **💬 Bagikan ke WhatsApp**: Bagikan file PDF invoice langsung ke WhatsApp klien Anda dengan satu kali klik.
+- **🔢 Auto "Terbilang"**: Mengonversi total angka mata uang ke dalam format kalimat bahasa Indonesia secara otomatis (contoh: *1.000.000* menjadi *"Satu Juta Rupiah"*).
+- **💳 Manajemen DP & Pelunasan**: Pantau Uang Muka (DP) dan Sisa Tagihan. Tersedia fitur sekali klik untuk membuat invoice Pelunasan baru.
+- **⚙️ Pengaturan Profil Perusahaan**: Sesuaikan Nama Perusahaan, Rekening, Logo Header, dan Cap/Stempel perusahaan yang langsung terintegrasi ke dalam cetakan PDF.
+- **🔒 PIN Keamanan**: Dilengkapi dengan pelindung *PIN Gate* sederhana (Default PIN: `202608`) untuk mencegah akses sembarangan.
+- **📱 Mobile Responsive**: Antarmuka tabel dan tombol yang otomatis menyesuaikan ukuran layar HP sehingga nyaman digunakan.
 
-1. Install dependencies
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js (App Router)
+- **Styling**: Tailwind CSS
+- **Database ORM**: Prisma
+- **Database**: PostgreSQL (oleh Neon / Vercel Storage)
+- **Icons**: Lucide React
+- **PDF Generator**: `html2canvas` & `jspdf`
+
+## 🚀 Cara Menjalankan Secara Lokal (Local Development)
+
+Jika Anda ingin menjalankan atau memodifikasi aplikasi ini di komputer Anda sendiri, ikuti langkah-langkah berikut:
+
+### 1. Persiapan
+Pastikan Anda sudah menginstal **Node.js** dan **Git** di komputer Anda.
+
+### 2. Clone Repositori
+```bash
+git clone https://github.com/androbuddiesgit/INV.git
+cd "INV Projek"
+```
+
+### 3. Instalasi Dependency
 ```bash
 npm install
 ```
 
-2. Jalankan migrasi database
+### 4. Konfigurasi Environment (Database)
+Buat file bernama `.env` di direktori paling luar (root), lalu isi dengan URL database PostgreSQL Anda:
+```env
+DATABASE_URL="postgresql://username:password@host/database"
+```
+
+### 5. Sinkronisasi Database (Prisma)
+Jalankan perintah ini untuk membuat tabel otomatis di dalam database Anda:
 ```bash
 npx prisma db push
 ```
 
-3. Build aplikasi Next.js
+### 6. Jalankan Server Dev
 ```bash
-npm run build
+npm run dev
 ```
+Buka browser dan akses `http://localhost:3000`. 
+*Catatan: Masukkan PIN `202608` jika diminta.*
 
-4. Jalankan server production
-```bash
-npm run start
-```
-*Aplikasi akan berjalan di port 3000.*
+## 🌐 Deployment (Vercel)
 
-## Konfigurasi Cloudflare Zero Trust
+Aplikasi ini sudah dioptimalkan untuk di-deploy ke **Vercel**.
+1. Hubungkan repositori GitHub Anda ke Vercel.
+2. Tambahkan Integrasi **Storage (Postgres)** di menu Vercel (seperti Neon DB).
+3. Pastikan `DATABASE_URL` terbentuk di tab *Environment Variables*.
+4. Vercel akan secara otomatis mem-build dan mem-publish aplikasi Anda.
 
-Karena aplikasi ini diakses melalui jaringan publik namun bersifat internal, sangat direkomendasikan menggunakan Cloudflare Tunnel:
-
-1. Install `cloudflared` di Armbian.
-2. Login dan buat tunnel:
-```bash
-cloudflared tunnel login
-cloudflared tunnel create invoice-app
-```
-3. Route trafik tunnel ke localhost:3000:
-```bash
-cloudflared tunnel route dns invoice-app invoice.domain-anda.com
-```
-4. Jalankan tunnel:
-```bash
-cloudflared tunnel run --url http://localhost:3000 invoice-app
-```
-5. Buka dashboard Cloudflare Zero Trust dan atur **Access Application** untuk membatasi siapa saja yang bisa mengakses URL tersebut (misalnya hanya email perusahaan).
+---
+*Dibuat untuk memudahkan operasional marketing dan penagihan dengan antarmuka yang bersih & rapi.*

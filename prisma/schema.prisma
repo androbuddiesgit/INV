@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Invoice {
+  id             String        @id @default(uuid())
+  invoiceNumber  String        @unique // e.g., 002/INV/VIII/2026
+  date           DateTime      @default(now())
+  
+  // Recipient info
+  toName         String
+  toAddress      String
+  toContact      String?
+  toPhone        String?
+
+  // Financials
+  subTotal       Int           @default(0)
+  dp             Int           @default(0)
+  sisaTagihan    Int           @default(0)
+  terbilang      String?
+  
+  // Relations
+  items          InvoiceItem[]
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model InvoiceItem {
+  id             String        @id @default(uuid())
+  description    String
+  qty            Int
+  price          Int
+  total          Int
+
+  invoiceId      String
+  invoice        Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model Setting {
+  id            String   @id @default("default")
+  companyName   String   @default("NURUL BAROKAH FASHION")
+  companyAddress String  @default("Kancana, Kec. Cikijing, Kabupaten Majalengka, Jawa Barat 45466")
+  companyPhone  String   @default("+62 823-1526-4784")
+  companyLogo   String?  // Boleh Base64 atau teks
+  stampLogo     String?  // Base64 gambar cap
+  bankAccount   String   @default("1982664820")
+  bankName      String   @default("Bank BNI Cab Kuningan")
+  bankOwner     String   @default("Ika Nuraeni")
+  officerName   String   @default("Eko Maryanto")
+  officerTitle  String   @default("Marketing Officer")
+  updatedAt     DateTime @updatedAt
+}
+

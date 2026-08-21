@@ -187,7 +187,7 @@ export default function InvoiceView({ invoice, settings }: { invoice: any, setti
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 return invoice.items.map((item: any) => {
                   const lines = item.description.split('\n');
-                  const numbers = lines.map((_: any, index: number) => currentNo + index).join('\n');
+                  const numbers = lines.map((_: string, index: number) => currentNo + index).join('\n');
                   currentNo += lines.length;
                   
                   return (

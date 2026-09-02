@@ -64,7 +64,7 @@ export async function createInvoice(data: any) {
     }
   });
 
-  revalidatePath('/');
+  revalidatePath('/dashboard');
   redirect(`/invoice/${invoice.id}`);
 }
 
@@ -75,7 +75,7 @@ export async function deleteInvoice(id: string) {
   await prisma.invoice.delete({
     where: { id },
   });
-  revalidatePath('/');
+  revalidatePath('/dashboard');
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,7 +118,7 @@ export async function updateInvoice(id: string, data: any) {
     },
   });
 
-  revalidatePath('/');
+  revalidatePath('/dashboard');
 }
 
 export async function createPelunasan(originalInvoiceId: string) {
@@ -190,7 +190,48 @@ export async function createPelunasan(originalInvoiceId: string) {
     data: { isSettled: true }
   });
 
-  revalidatePath('/');
+  revalidatePath('/dashboard');
+}
+
+// ========================
+// CATALOG / PRODUCT ACTIONS
+// ========================
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function createProduct(data: any) {
+  await prisma.product.create({
+    data: {
+      name: data.name,
+      description: data.description,
+      price: Number(data.price),
+      image: data.image
+    }
+  });
+  revalidatePath('/dashboard');
+  revalidatePath('/catalog-admin');
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateProduct(id: string, data: any) {
+  await prisma.product.update({
+    where: { id },
+    data: {
+      name: data.name,
+      description: data.description,
+      price: Number(data.price),
+      image: data.image
+    }
+  });
+  revalidatePath('/dashboard');
+  revalidatePath('/catalog-admin');
+}
+
+export async function deleteProduct(id: string) {
+  await prisma.product.delete({
+    where: { id }
+  });
+  revalidatePath('/dashboard');
+  revalidatePath('/catalog-admin');
 }
 
 export async function getSettings() {
@@ -238,5 +279,5 @@ export async function updateSettings(data: any) {
     }
   });
   revalidatePath('/settings');
-  revalidatePath('/');
+  revalidatePath('/dashboard');
 }

@@ -38,6 +38,12 @@ export default function DashboardClient({ initialInvoices }: { initialInvoices: 
         <h1 className="text-3xl font-bold text-gray-800">Riwayat Invoice</h1>
         <div className="flex gap-3">
           <Link 
+            href="/catalog-admin" 
+            className="flex items-center gap-2 bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            Kelola Katalog
+          </Link>
+          <Link 
             href="/settings" 
             className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
           >

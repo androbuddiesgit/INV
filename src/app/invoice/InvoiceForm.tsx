@@ -9,7 +9,7 @@ import { formatTerbilang } from '@/lib/terbilang';
 import Link from 'next/link';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function InvoiceForm({ initialData }: { initialData?: any }) {
+export default function InvoiceForm({ initialData, catalogProducts = [] }: { initialData?: any, catalogProducts?: any[] }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -61,7 +61,7 @@ export default function InvoiceForm({ initialData }: { initialData?: any }) {
       } else {
         await createInvoice(data);
       }
-      router.push('/');
+      router.push('/dashboard');
     } catch (error) {
       console.error(error);
       alert('Gagal memproses invoice');
@@ -71,7 +71,7 @@ export default function InvoiceForm({ initialData }: { initialData?: any }) {
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
-      <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 font-medium mb-6 transition-colors">
+      <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 font-medium mb-6 transition-colors">
         <ArrowLeft size={20} /> Kembali ke Dashboard
       </Link>
       
@@ -118,42 +118,66 @@ export default function InvoiceForm({ initialData }: { initialData?: any }) {
             
             <div className="space-y-3">
               {fields.map((field, index) => (
-                <div key={field.id} className="flex flex-col sm:flex-row gap-3 items-start bg-white p-3 border border-gray-200 rounded-lg">
+                <div key={field.id} className="flex flex-col sm:flex-row gap-3 items-start bg-white p-4 border border-gray-200 rounded-lg shadow-sm relative">
+                  
+                  {/* Catalog Selector */}
+                  {catalogProducts && catalogProducts.length > 0 && (
+                    <div className="w-full sm:w-1/3">
+                      <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Pilih dari Katalog (Opsional)</label>
+                      <select 
+                        className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 text-sm"
+                        onChange={(e) => {
+                          const prod = catalogProducts.find(p => p.id === e.target.value);
+                          if (prod) {
+                            setValue(`items.${index}.description`, prod.name + (prod.description ? `\n${prod.description}` : ''));
+                            setValue(`items.${index}.price`, prod.price);
+                          }
+                        }}
+                      >
+                        <option value="">-- Ketik manual atau pilih --</option>
+                        {catalogProducts.map(p => (
+                          <option key={p.id} value={p.id}>{p.name} (Rp {p.price.toLocaleString('id-ID')})</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   <div className="flex-1 w-full">
-                    <label className="block text-xs text-gray-500 mb-1 sm:hidden">Deskripsi</label>
+                    <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Deskripsi / Detail Barang</label>
                     <textarea 
                       {...register(`items.${index}.description`)} 
                       placeholder="Tekan Enter untuk membuat 1 Set barang dengan harga yang sama..." 
                       required 
                       rows={2}
-                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 resize-y" 
+                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 resize-y text-sm" 
                     />
                   </div>
-                  <div className="w-full sm:w-24">
-                    <label className="block text-xs text-gray-500 mb-1 sm:hidden">Qty</label>
+                  <div className="w-full sm:w-20">
+                    <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Qty</label>
                     <input 
                       type="number" 
                       {...register(`items.${index}.qty`)} 
                       min="1" 
                       required 
-                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" 
+                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
                     />
                   </div>
                   <div className="w-full sm:w-40">
-                    <label className="block text-xs text-gray-500 mb-1 sm:hidden">Harga</label>
+                    <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Harga (Rp)</label>
                     <input 
                       type="number" 
                       {...register(`items.${index}.price`)} 
                       min="0" 
                       required 
-                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" 
+                      className="w-full border-gray-300 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 text-sm" 
                     />
                   </div>
                   {fields.length > 1 && (
                     <button 
                       type="button" 
                       onClick={() => remove(index)} 
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors mt-6 sm:mt-0"
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors mt-5 sm:mt-5"
+                      title="Hapus baris ini"
                     >
                       <Trash2 size={20} />
                     </button>

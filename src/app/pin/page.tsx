@@ -14,7 +14,7 @@ export default function PinPage() {
     if (pin === '202608') {
       // Set cookie berlaku 1 tahun (dalam detik)
       document.cookie = "app_pin=202608; path=/; max-age=31536000";
-      router.push('/');
+      router.push('/dashboard');
     } else {
       setError(true);
       setPin('');

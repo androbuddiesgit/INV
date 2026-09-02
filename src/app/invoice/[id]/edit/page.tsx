@@ -20,5 +20,7 @@ export default async function EditInvoicePage({ params }: { params: { id: string
     date: formattedDate,
   };
 
-  return <InvoiceForm initialData={initialData} />;
+  const products = await prisma.product.findMany();
+
+  return <InvoiceForm initialData={initialData} catalogProducts={products} />;
 }

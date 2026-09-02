@@ -58,3 +58,13 @@ model Setting {
   updatedAt     DateTime @updatedAt
 }
 
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Int
+  image       String?  // Base64 image highly compressed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+

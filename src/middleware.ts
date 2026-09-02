@@ -3,17 +3,22 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const pin = request.cookies.get('app_pin')?.value;
+  const path = request.nextUrl.pathname;
   
-  // Jika PIN salah dan tidak sedang berada di halaman /pin
-  if (pin !== '202608' && !request.nextUrl.pathname.startsWith('/pin')) {
+  const isProtected = 
+    path.startsWith('/dashboard') || 
+    path.startsWith('/invoice') || 
+    path.startsWith('/settings') || 
+    path.startsWith('/catalog-admin');
+
+  // Jika mencoba akses rute terproteksi tanpa PIN yang benar
+  if (isProtected && pin !== '202608') {
     return NextResponse.redirect(new URL('/pin', request.url));
   }
   
-  // Jika PIN benar atau sedang di halaman /pin, biarkan lewat
   return NextResponse.next();
 }
 
 export const config = {
-  // Terapkan ke semua halaman KECUALI file statis, gambar, dan api
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

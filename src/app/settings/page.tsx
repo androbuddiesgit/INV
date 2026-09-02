@@ -10,7 +10,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
-      <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 font-medium mb-6 transition-colors">
+      <Link href="/dashboard" className="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 font-medium mb-6 transition-colors">
         <ArrowLeft size={20} /> Kembali ke Dashboard
       </Link>
       

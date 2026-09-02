@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { 
   Building2, 
@@ -42,12 +41,6 @@ export default async function LandingPage() {
               <a href="#services" className="hover:text-blue-600 transition-colors">Layanan</a>
               <a href="#katalog" className="hover:text-blue-600 transition-colors">Katalog</a>
               <a href="#contact" className="hover:text-blue-600 transition-colors">Kontak</a>
-              <Link 
-                href="/dashboard"
-                className="bg-blue-600 text-white px-5 py-2.5 rounded-full hover:bg-blue-700 transition-colors shadow-sm"
-              >
-                Login Admin
-              </Link>
             </div>
           </div>
         </div>

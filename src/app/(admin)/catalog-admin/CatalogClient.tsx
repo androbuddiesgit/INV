@@ -46,13 +46,42 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit for base64 safety
-        alert('Ukuran gambar terlalu besar! Maksimal 2MB.');
-        return;
-      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, image: reader.result as string }));
+        const img = new window.Image();
+        img.onload = () => {
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height = Math.round((height * MAX_WIDTH) / width);
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width = Math.round((width * MAX_HEIGHT) / height);
+              height = MAX_HEIGHT;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            // Auto compress to JPEG at 70% quality (biasanya tembus di bawah 100KB)
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            setFormData(prev => ({ ...prev, image: compressedBase64 }));
+          } else {
+            setFormData(prev => ({ ...prev, image: reader.result as string }));
+          }
+        };
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -187,7 +216,7 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
                     >
                       Pilih Gambar
                     </button>
-                    <p className="text-xs text-gray-500 mt-2">Maksimal 2MB. Format JPG, PNG.</p>
+                    <p className="text-xs text-gray-500 mt-2">Gambar akan otomatis dikompres ke ukuran kecil (Optimal).</p>
                   </div>
                 </div>
               </div>

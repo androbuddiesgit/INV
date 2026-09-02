@@ -21,6 +21,7 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
     image: ''
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleOpenModal = (product: any = null) => {
     if (product) {
       setEditingProduct(product);

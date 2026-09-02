@@ -21,7 +21,7 @@ export default function CatalogClient({ initialProducts }: { initialProducts: an
     image: ''
   });
 
-  const handleOpenModal = (product = null) => {
+  const handleOpenModal = (product: any = null) => {
     if (product) {
       setEditingProduct(product);
       setFormData({

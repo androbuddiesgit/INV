@@ -23,11 +23,20 @@ export const metadata: Metadata = {
     title: 'NB FASHION | Pabrik Konveksi & Garment Industri di Majalengka',
     description: 'Pusat konveksi dan garment skala industri di Cikijing, Majalengka. Kapasitas 200rb pcs/bulan. Melayani B2B, Instansi, dan Brand Lokal.',
     siteName: 'NB FASHION',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'NB FASHION Pabrik Konveksi',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'NB FASHION | Pabrik Konveksi & Garment Industri',
     description: 'Pusat konveksi dan garment skala industri di Cikijing, Majalengka. Kapasitas 200rb pcs/bulan.',
+    images: ['/opengraph-image'],
   },
 };
 

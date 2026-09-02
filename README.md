@@ -1,17 +1,23 @@
-# Aplikasi Manajemen Invoice (Marketing) 📄💼
+# Aplikasi NB FASHION (Profil Perusahaan, Katalog & Manajemen Invoice) 📄💼
 
-Aplikasi web modern berbasis **Next.js** untuk mengelola, mencetak, dan membagikan tagihan (invoice) secara cepat dan mudah. Aplikasi ini didesain secara spesifik agar *user-friendly*, sangat responsif di perangkat mobile, dan cocok digunakan oleh pengguna dari berbagai kalangan usia.
+Aplikasi web modern berbasis **Next.js** yang dirancang sebagai solusi *2-in-1* untuk perusahaan konveksi garmen. Aplikasi ini berfungsi sebagai **Website Profil Publik (Landing Page)** untuk klien, sekaligus sebagai **Sistem Admin Internal** untuk mengelola katalog produk dan pembuatan invoice otomatis.
 
 ## ✨ Fitur Utama
 
-- **📝 CRUD Invoice Lengkap**: Buat, lihat, edit, dan hapus invoice dengan mudah.
-- **📄 Cetak & Download PDF**: Generate invoice ke format A4 PDF secara langsung dari browser tanpa perlu server tambahan (menggunakan `html2canvas` & `jspdf`).
-- **💬 Bagikan ke WhatsApp**: Bagikan file PDF invoice langsung ke WhatsApp klien Anda dengan satu kali klik.
-- **🔢 Auto "Terbilang"**: Mengonversi total angka mata uang ke dalam format kalimat bahasa Indonesia secara otomatis (contoh: *1.000.000* menjadi *"Satu Juta Rupiah"*).
-- **💳 Manajemen DP & Pelunasan**: Pantau Uang Muka (DP) dan Sisa Tagihan. Tersedia fitur sekali klik untuk membuat invoice Pelunasan baru.
-- **⚙️ Pengaturan Profil Perusahaan**: Sesuaikan Nama Perusahaan, Rekening, Logo Header, dan Cap/Stempel perusahaan yang langsung terintegrasi ke dalam cetakan PDF.
-- **🔒 PIN Keamanan**: Dilengkapi dengan pelindung *PIN Gate* sederhana (Default PIN: `202608`) untuk mencegah akses sembarangan.
-- **📱 Mobile Responsive**: Antarmuka tabel dan tombol yang otomatis menyesuaikan ukuran layar HP sehingga nyaman digunakan.
+### 🌐 Halaman Publik (Tanpa PIN)
+- **Company Profile**: Menampilkan Sejarah, Visi Misi, Layanan (CMT, Makloon, Seragam), dan Kapasitas Pabrik secara elegan.
+- **Katalog Produk Live**: Klien dapat melihat daftar produk unggulan lengkap dengan **Foto Produk** dan estimasi harga.
+- **Kontak Langsung**: Tombol *Call-to-Action* yang langsung menghubungkan klien ke WhatsApp Divisi Marketing.
+
+### 🔒 Dashboard Admin (Terproteksi PIN)
+- **Manajemen Katalog 🛍️**: Upload foto produk, edit nama, deskripsi, dan harga barang untuk ditampilkan di halaman depan.
+- **Auto-Fill Invoice ⚡**: Buat invoice jauh lebih cepat! Cukup pilih barang dari dropdown katalog, maka nama dan harga akan terisi otomatis.
+- **📝 CRUD Invoice Lengkap**: Buat, lihat, edit, dan hapus invoice dengan mudah. Fitur 1 Set barang (banyak deskripsi dalam 1 Qty/Harga) didukung penuh.
+- **📄 Cetak & Download PDF**: Generate invoice ke format A4 PDF secara langsung dari browser (menggunakan `html2canvas` & `jspdf`).
+- **💬 Bagikan ke WhatsApp**: Bagikan *File PDF* invoice langsung ke aplikasi WhatsApp klien Anda dengan satu kali klik.
+- **🔢 Auto "Terbilang"**: Mengonversi total angka mata uang ke format kalimat bahasa Indonesia secara otomatis.
+- **💳 Manajemen DP & Pelunasan**: Pantau Uang Muka (DP). Tersedia fitur 1-klik untuk men-generate invoice Pelunasan otomatis.
+- **⚙️ Pengaturan Profil (Kop Surat)**: Sesuaikan Nama Perusahaan, Rekening, Logo, dan Stempel yang terintegrasi ke dalam cetakan PDF.
 
 ## 🛠️ Tech Stack
 
@@ -56,16 +62,16 @@ npx prisma db push
 ```bash
 npm run dev
 ```
-Buka browser dan akses `http://localhost:3000`. 
-*Catatan: Masukkan PIN `202608` jika diminta.*
+- **Halaman Profil Publik**: Akses `http://localhost:3000`
+- **Halaman Admin**: Klik tombol "Login Admin" atau akses `http://localhost:3000/dashboard` *(Masukkan PIN default: `202608` jika diminta).*
 
 ## 🌐 Deployment (Vercel)
 
-Aplikasi ini sudah dioptimalkan untuk di-deploy ke **Vercel**.
+Aplikasi ini sangat dioptimalkan untuk di-deploy ke **Vercel**.
 1. Hubungkan repositori GitHub Anda ke Vercel.
 2. Tambahkan Integrasi **Storage (Postgres)** di menu Vercel (seperti Neon DB).
 3. Pastikan `DATABASE_URL` terbentuk di tab *Environment Variables*.
 4. Vercel akan secara otomatis mem-build dan mem-publish aplikasi Anda.
 
 ---
-*Dibuat untuk memudahkan operasional marketing dan penagihan dengan antarmuka yang bersih & rapi.*
+*Dikembangkan untuk menunjang produktivitas dan branding NB FASHION - The Power of Cikijing Garment Industry.*

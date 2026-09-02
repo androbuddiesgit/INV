@@ -148,7 +148,7 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
       </div>
 
       <div className="flex items-center justify-between pt-6 border-t">
-        <Link href="/" className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-medium">
+        <Link href="/dashboard" className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-medium">
           <ArrowLeft size={20} /> Kembali
         </Link>
         <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50">

@@ -7,7 +7,7 @@ import { createProduct, updateProduct, deleteProduct } from '@/app/actions';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CatalogClient({ initialProducts }: { initialProducts: any[] }) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products] = useState(initialProducts);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editingProduct, setEditingProduct] = useState<any>(null);

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { 
@@ -111,7 +110,7 @@ export default async function LandingPage() {
               
               <h3 className="text-2xl font-bold mb-4 text-slate-900">VISI</h3>
               <p className="text-slate-600 mb-10 italic">
-                "Menjadi industri garmen dari Majalengka yang mampu bersaing di level nasional melalui teknologi, kapasitas, dan integritas dan menjadi mitra produksi terpercaya."
+                &quot;Menjadi industri garmen dari Majalengka yang mampu bersaing di level nasional melalui teknologi, kapasitas, dan integritas dan menjadi mitra produksi terpercaya.&quot;
               </p>
               
               <h3 className="text-2xl font-bold mb-4 text-slate-900">MISI</h3>

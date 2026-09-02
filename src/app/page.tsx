@@ -214,7 +214,7 @@ export default async function LandingPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">Katalog Produk</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto text-lg">Koleksi referensi produksi dan estimasi harga</p>
+            <p className="text-slate-600 max-w-2xl mx-auto text-lg">Koleksi referensi produksi dan portofolio unggulan kami</p>
           </div>
           
           {products.length === 0 ? (
@@ -237,10 +237,7 @@ export default async function LandingPage() {
                   </div>
                   <div className="p-6">
                     <h4 className="font-bold text-slate-900 text-lg mb-2">{prod.name}</h4>
-                    <p className="text-slate-500 text-sm mb-4 line-clamp-2">{prod.description}</p>
-                    <div className="text-blue-600 font-black text-xl">
-                      Rp {prod.price.toLocaleString('id-ID')}
-                    </div>
+                    <p className="text-slate-500 text-sm line-clamp-2">{prod.description}</p>
                   </div>
                 </div>
               ))}
